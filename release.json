@@ -1,0 +1,40 @@
+{
+  "hostImports": {
+    "view.aseprite": [
+      "/core/runtime.js",
+      "/util/view-canvas-base.js"
+    ],
+    "view.image": [
+      "/core/runtime.js",
+      "/util/qoi/decode.js",
+      "/util/view-canvas-base.js"
+    ]
+  },
+  "packages": [
+    {
+      "entry": "views/view-image.js",
+      "files": {
+        "src/view.image/views/view-image.js": "views/view-image.js"
+      },
+      "kind": "view",
+      "name": "view.image",
+      "sha256": {
+        "src/view.image/views/view-image.js": "a02e70d3a92e0ef370120f55345a9fa5a68b9a0575298df0ac78a8db5daa9f03"
+      },
+      "tag": "view-image"
+    },
+    {
+      "entry": "views/view-aseprite.js",
+      "files": {
+        "src/view.aseprite/views/view-aseprite.js": "views/view-aseprite.js"
+      },
+      "kind": "view",
+      "name": "view.aseprite",
+      "sha256": {
+        "src/view.aseprite/views/view-aseprite.js": "76cc3cbd627f0f500092b248dd540978d0a20fc748fcc7b000b7d74a9bbd78e5"
+      },
+      "tag": "view-aseprite"
+    }
+  ],
+  "repository": "view.image"
+}

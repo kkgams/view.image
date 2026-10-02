@@ -1,0 +1,19 @@
+{
+  "hostImports": {
+    "view.aseprite": [
+      "/core/runtime.js",
+      "/util/view-canvas-base.js"
+    ],
+    "view.image": [
+      "/core/runtime.js",
+      "/util/qoi/decode.js",
+      "/util/view-canvas-base.js"
+    ]
+  },
+  "limits": "Parent must add source-bound LICENSE/NOTICE evidence before distribution.",
+  "transformation": "Blend entries remove only the other registration block; original source retained under upstream/.",
+  "upstream_sha256": {
+    "views/view-aseprite.js": "76cc3cbd627f0f500092b248dd540978d0a20fc748fcc7b000b7d74a9bbd78e5",
+    "views/view-image.js": "a02e70d3a92e0ef370120f55345a9fa5a68b9a0575298df0ac78a8db5daa9f03"
+  }
+}

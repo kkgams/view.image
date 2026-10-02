@@ -1,0 +1,24 @@
+{
+  "dynamicImports": [],
+  "failurePolicy": "Missing imports, schemas, required config and providers must fail loudly; no optional defaults introduced.",
+  "guiValidationPending": "Image/QOI/aseprite loading, canvas edits, timeline and export",
+  "legacyLimits": [],
+  "requirements": [
+    "Browser DOM and custom elements",
+    "Project Config View ids, source and view-specific configuration",
+    "Configured runtime plugin/service providers",
+    "Host base/theme semantic CSS"
+  ],
+  "staticImports": {
+    "view.aseprite": [
+      "/core/runtime.js",
+      "/util/view-canvas-base.js"
+    ],
+    "view.image": [
+      "/core/runtime.js",
+      "/util/qoi/decode.js",
+      "/util/view-canvas-base.js"
+    ]
+  },
+  "supportedHost": "2.0.3"
+}
