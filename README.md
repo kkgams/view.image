@@ -1,41 +1,26 @@
 # view.image
 
-One separately installable ZIP per View, never npm/OCI. Host contract: GAMS 2.0.3.
-Run npm test (Node 24, Python 3 stdlib). release.json binds package identities, deployment maps and hashes.
-Absolute imports enumerated in release.json are required Host-owned runtime/util/widget APIs; missing APIs, config or schemas are bugs, not optional fallbacks.
-Keep Project Config ids/tags and URLs as deployed. view-markdow spelling is deliberately unchanged.
-Blend 1D retains views/view-animation-blend-spaces.js; independently installed 2D requires views/view-animation-blend-space-2d.js in Project Config. No HTML/class behavior is rewritten.
-Install using scripts/release.py install (verified checksums), retain metadata under notices/project-units/<package>. Refuse all overwrite collisions.
-Dependencies (plugins, sibling Views, UI Services) remain Project configured; static Host imports are documented, not vendored.
-HOST-CONTRACT.json includes required dynamic widget paths and known legacy schema limits.
-GUI validation pending: Image/QOI/aseprite loading, canvas edits, timeline and export. No blanket E2E claim.
+Image and Aseprite file Views for [GAMS](https://github.com/kkgams/gams). The local Project opens a file browser for your own PNG, JPEG, GIF, WebP, QOI or Aseprite files; no artwork is bundled.
 
-## Release authorization
+| View | Source → deployed file | Screenshot | Original work |
+| --- | --- | --- | --- |
+| Image (`view-image`) | `src/view.image/views/view-image.js` → `views/view-image.js` | Not available | GAMS authors |
+| Aseprite (`view-aseprite`) | `src/view.aseprite/views/view-aseprite.js` → `views/view-aseprite.js` | Not available | GAMS authors |
 
-A pushed matching version tag authorizes publication from any branch. No manual
-checksum approval variables are required; source/evidence and artifact checks remain
-strict. See `PUBLISHING.md`.
+Both independently installable ZIPs include [Apache-2.0](LICENSE), [NOTICE](NOTICE) and [licensing scope](LICENSING.md).
 
-## Local commands
+## Development
 
-Requires Node.js 24+, Python 3, Make, curl, tar and unzip. No npm install needed.
+Requires Make, Node.js, Python 3, curl, zip, unzip and tar. `make open` requires macOS Apple Silicon. Sources load directly; Host helpers and pinned released dependencies in `gams.json` are not bundled.
 
-```sh
-npm test
-make open                      # current local gams.json in tools/gams.app
-make serve-docs                 # http://localhost:8080; DOCS_PORT overrides
-make validate-docs
-make docs                       # portable wiki under build/site/
-```
+| Command | Purpose |
+| --- | --- |
+| `make open` | Open local Project in released Host; first launch needs network. |
+| `make check` | Check JavaScript syntax. |
+| `make package` | Build independent stable-name ZIPs and SHA256SUMS under `build.nosync/`. |
+| `make serve-docs` | Preview pinned wiki; `DOCS_PORT=8081` overrides port 8080. |
+| `make docs` | Build portable wiki in `build.nosync/site/`. |
+| `make validate-docs` | Validate wiki links/content. |
+| `make clean` | Remove build output and marked downloads; refuse tracked files, symlinks and supplied tools/Units. |
 
-The View source loads directly from `src/`; no compilation is required.
-`make tools/gams.app` downloads the released macOS Apple Silicon Host only when
-absent, preserving its notices. `make open` explicitly sets `GAMS_APP_CWD` to
-this repository; no sibling checkout is required. Keep macOS security checks intact.
-Published dependencies are pinned in `gams.json` and cached under ignored
-`gams_modules/`. First launch needs network access.
-
-The wiki uses pinned justgook/wiki v1.4.0. GitHub Pages runs `make docs` on every
-push to `release`, independently of Unit tags. Enable **Settings → Pages → Source
-→ GitHub Actions**. `build-docs` remains an alias. Native GUI and hosted workflow
-execution are separate verification steps.
+Existing Host tools are never implicitly updated. Keep macOS security checks intact. GUI validation of file loading, canvas editing, timeline and export remains pending.

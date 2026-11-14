@@ -5,8 +5,25 @@ status: reference
 
 # view.image
 
-The local Project opens a file browser. Select your own Project-local PNG, JPEG, GIF, WebP, QOI or Aseprite file to open the local image/aseprite View. No artwork is bundled.
+Image and Aseprite file Views for [GAMS](https://github.com/kkgams/gams). The local Project opens a file browser for your own PNG, JPEG, GIF, WebP, QOI or Aseprite files; no artwork is bundled.
 
-The local Project registers canonical View entries directly from `src/` and published dependencies pinned in `gams.json`. Host-owned `/core`, `/util`, `/widgets` APIs and theme styling are not bundled.
+| View | Source → deployed file | Screenshot | Original work |
+| --- | --- | --- | --- |
+| Image (`view-image`) | `src/view.image/views/view-image.js` → `views/view-image.js` | Not available | GAMS authors |
+| Aseprite (`view-aseprite`) | `src/view.aseprite/views/view-aseprite.js` → `views/view-aseprite.js` | Not available | GAMS authors |
 
-Run `make open` on macOS Apple Silicon to launch the real Host. Run `npm test` for repository checks. Preview docs with `make serve-docs DOCS_PORT=8081`, validate with `make validate-docs`, and build a portable site with `make docs`. GitHub Pages runs that build on every push to `release`. Unit tag-release policies are unchanged.
+## Development
+
+Requires Make, Node.js, Python 3, curl, zip, unzip and tar. `make open` requires macOS Apple Silicon. Sources load directly; Host helpers and pinned released dependencies in `gams.json` are not bundled.
+
+| Command | Purpose |
+| --- | --- |
+| `make open` | Open local Project in released Host; first launch needs network. |
+| `make check` | Check JavaScript syntax. |
+| `make package` | Build independent stable-name ZIPs and SHA256SUMS under `build.nosync/`. |
+| `make serve-docs` | Preview pinned wiki; `DOCS_PORT=8081` overrides port 8080. |
+| `make docs` | Build portable wiki in `build.nosync/site/`. |
+| `make validate-docs` | Validate wiki links/content. |
+| `make clean` | Remove build output and marked downloads; refuse tracked files, symlinks and supplied tools/Units. |
+
+Existing Host tools are never implicitly updated. Keep macOS security checks intact. GUI validation of file loading, canvas editing, timeline and export remains pending.
