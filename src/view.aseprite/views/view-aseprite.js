@@ -19,7 +19,10 @@ function makePixelsCanvas(pixels) {
     assert(Number.isInteger(pixels.height), "view-aseprite pixels height must be an integer")
     assert(Array.isArray(pixels.data), "view-aseprite pixels data must be an array")
     const data = new Uint8ClampedArray(pixels.data)
-    assert(data.length === pixels.width * pixels.height * 4, "view-aseprite pixels data length must match RGBA dimensions")
+    assert(
+        data.length === pixels.width * pixels.height * 4,
+        "view-aseprite pixels data length must match RGBA dimensions",
+    )
     const canvas = document.createElement("canvas")
     canvas.width = pixels.width
     canvas.height = pixels.height
@@ -92,10 +95,16 @@ function rgbaCss(color) {
 function sliceUserData(slice) {
     const userData = optionValue(slice["user-data"], `view-aseprite slice ${String(slice.name || "")} user data`)
     if (userData === null) return { text: null, color: null }
-    assert(userData && typeof userData === "object", `view-aseprite slice ${String(slice.name || "")} user data must be an object`)
+    assert(
+        userData && typeof userData === "object",
+        `view-aseprite slice ${String(slice.name || "")} user data must be an object`,
+    )
     const text = optionValue(userData.text, `view-aseprite slice ${String(slice.name || "")} user data text`)
     const colorValue = optionValue(userData.color, `view-aseprite slice ${String(slice.name || "")} user data color`)
-    const color = colorValue === null ? null : normalizeRgba(colorValue, `view-aseprite slice ${String(slice.name || "")} user data color`)
+    const color =
+        colorValue === null
+            ? null
+            : normalizeRgba(colorValue, `view-aseprite slice ${String(slice.name || "")} user data color`)
     return { text, color }
 }
 
@@ -110,11 +119,20 @@ function sliceKeyForFrame(slice, frameIndex) {
     assert(Number.isInteger(frameIndex), "view-aseprite slice frame index must be an integer")
     const keys = [...slice.keys].sort((left, right) => Number(left.frame) - Number(right.frame))
     for (const key of keys) {
-        assert(Number.isInteger(Number(key.frame)), `view-aseprite slice ${String(slice.name || "")} key frame must be an integer`)
+        assert(
+            Number.isInteger(Number(key.frame)),
+            `view-aseprite slice ${String(slice.name || "")} key frame must be an integer`,
+        )
         assert(Number.isInteger(Number(key.x)), `view-aseprite slice ${String(slice.name || "")} x must be an integer`)
         assert(Number.isInteger(Number(key.y)), `view-aseprite slice ${String(slice.name || "")} y must be an integer`)
-        assert(Number.isInteger(Number(key.width)) && Number(key.width) > 0, `view-aseprite slice ${String(slice.name || "")} width must be a positive integer`)
-        assert(Number.isInteger(Number(key.height)) && Number(key.height) > 0, `view-aseprite slice ${String(slice.name || "")} height must be a positive integer`)
+        assert(
+            Number.isInteger(Number(key.width)) && Number(key.width) > 0,
+            `view-aseprite slice ${String(slice.name || "")} width must be a positive integer`,
+        )
+        assert(
+            Number.isInteger(Number(key.height)) && Number(key.height) > 0,
+            `view-aseprite slice ${String(slice.name || "")} height must be a positive integer`,
+        )
     }
     let selected = keys[0]
     for (const key of keys) {
@@ -128,7 +146,10 @@ function sliceKeyForFrame(slice, frameIndex) {
     const height = Number(selected.height)
     if (patch) {
         assert(patch.x >= 0 && patch.x + patch.width <= width, `${name} nine-slice patch must fit within slice width`)
-        assert(patch.y >= 0 && patch.y + patch.height <= height, `${name} nine-slice patch must fit within slice height`)
+        assert(
+            patch.y >= 0 && patch.y + patch.height <= height,
+            `${name} nine-slice patch must fit within slice height`,
+        )
     }
     return {
         frame: Number(selected.frame),
@@ -141,7 +162,11 @@ function sliceKeyForFrame(slice, frameIndex) {
     }
 }
 
-function drawSliceOverlay(ctx, key, { offsetX = 0, offsetY = 0, lineWidth = 1, includeBounds = true, color = { r: 255, g: 0, b: 255, a: 255 } } = {}) {
+function drawSliceOverlay(
+    ctx,
+    key,
+    { offsetX = 0, offsetY = 0, lineWidth = 1, includeBounds = true, color = { r: 255, g: 0, b: 255, a: 255 } } = {},
+) {
     const x = offsetX
     const y = offsetY
     ctx.save()
@@ -217,7 +242,9 @@ export class ViewAseprite extends ViewCanvasBase {
         if (this.dataset.ready) return
         this.dataset.ready = "1"
 
-        this.path = String(this.popupProps?.path || this.getAttribute("data-source") || this.config?.defaultSource || "").trim()
+        this.path = String(
+            this.popupProps?.path || this.getAttribute("data-source") || this.config?.defaultSource || "",
+        ).trim()
         assert(this.path, "view-aseprite requires data-source")
 
         this.innerHTML = `
@@ -300,11 +327,15 @@ export class ViewAseprite extends ViewCanvasBase {
       </div>
     `
         toolbar.querySelector('[data-action="reload"]').addEventListener("click", () => this.reload())
-        toolbar.querySelector('[data-action="first-frame"]').addEventListener("click", () => this.setFrame(this.playbackStartFrame()))
+        toolbar
+            .querySelector('[data-action="first-frame"]')
+            .addEventListener("click", () => this.setFrame(this.playbackStartFrame()))
         toolbar.querySelector('[data-action="previous-frame"]').addEventListener("click", () => this.previousFrame())
         toolbar.querySelector('[data-action="play-pause"]').addEventListener("click", () => this.togglePlayback())
         toolbar.querySelector('[data-action="next-frame"]').addEventListener("click", () => this.nextFrame())
-        toolbar.querySelector('[data-action="last-frame"]').addEventListener("click", () => this.setFrame(this.playbackEndFrame()))
+        toolbar
+            .querySelector('[data-action="last-frame"]')
+            .addEventListener("click", () => this.setFrame(this.playbackEndFrame()))
         toolbar.querySelector('[data-action="zoom-in"]').addEventListener("click", () => this.zoomIn())
         toolbar.querySelector('[data-action="zoom-fit"]').addEventListener("click", () => this.zoomFit())
         toolbar.querySelector('[data-action="zoom-out"]').addEventListener("click", () => this.zoomOut())
@@ -351,13 +382,31 @@ export class ViewAseprite extends ViewCanvasBase {
             await this.releaseDocument()
             this.documentResource = unwrap(await runtime.invoke("aseprite/aseprite::open", this.path), "aseprite open")
             this.info = unwrap(await runtime.invoke("aseprite/aseprite::info", this.documentResource), "aseprite info")
-            this.frames = unwrap(await runtime.invoke("aseprite/aseprite::frames", this.documentResource), "aseprite frames")
-            this.layers = unwrap(await runtime.invoke("aseprite/aseprite::layers", this.documentResource), "aseprite layers")
+            this.frames = unwrap(
+                await runtime.invoke("aseprite/aseprite::frames", this.documentResource),
+                "aseprite frames",
+            )
+            this.layers = unwrap(
+                await runtime.invoke("aseprite/aseprite::layers", this.documentResource),
+                "aseprite layers",
+            )
             this.tags = unwrap(await runtime.invoke("aseprite/aseprite::tags", this.documentResource), "aseprite tags")
-            this.paletteInfo = unwrap(await runtime.invoke("aseprite/aseprite::get-palette-info", this.documentResource), "aseprite palette info")
-            this.paletteColors = unwrap(await runtime.invoke("aseprite/aseprite::palette-colors", this.documentResource), "aseprite palette colors")
-            this.slices = unwrap(await runtime.invoke("aseprite/aseprite::slices", this.documentResource), "aseprite slices")
-            this.tilesets = unwrap(await runtime.invoke("aseprite/aseprite::tilesets", this.documentResource), "aseprite tilesets")
+            this.paletteInfo = unwrap(
+                await runtime.invoke("aseprite/aseprite::get-palette-info", this.documentResource),
+                "aseprite palette info",
+            )
+            this.paletteColors = unwrap(
+                await runtime.invoke("aseprite/aseprite::palette-colors", this.documentResource),
+                "aseprite palette colors",
+            )
+            this.slices = unwrap(
+                await runtime.invoke("aseprite/aseprite::slices", this.documentResource),
+                "aseprite slices",
+            )
+            this.tilesets = unwrap(
+                await runtime.invoke("aseprite/aseprite::tilesets", this.documentResource),
+                "aseprite tilesets",
+            )
             assert(this.frames.length > 0, "view-aseprite requires at least one frame")
             this.layerVisibility = new Map(this.layers.map((layer) => [layer.index, layerInitiallyVisible(layer)]))
             this.celsByFrame = new Map()
@@ -390,7 +439,10 @@ export class ViewAseprite extends ViewCanvasBase {
     async celsForFrame(frameIndex) {
         if (this.celsByFrame.has(frameIndex)) return this.celsByFrame.get(frameIndex)
         assert(this.documentResource, "view-aseprite requires loaded document")
-        const cels = unwrap(await runtime.invoke("aseprite/aseprite::cels", this.documentResource, frameIndex), "aseprite cels")
+        const cels = unwrap(
+            await runtime.invoke("aseprite/aseprite::cels", this.documentResource, frameIndex),
+            "aseprite cels",
+        )
         this.celsByFrame.set(frameIndex, cels)
         return cels
     }
@@ -410,7 +462,15 @@ export class ViewAseprite extends ViewCanvasBase {
             const layer = this.layers[cel["layer-index"]]
             assert(layer, `view-aseprite cel references missing layer ${cel["layer-index"]}`)
             if (this.layerVisibility.get(layer.index) !== true) continue
-            const celPixels = unwrap(await runtime.invoke("aseprite/aseprite::cel-pixels", this.documentResource, frameIndex, cel["cel-index"]), "aseprite cel pixels")
+            const celPixels = unwrap(
+                await runtime.invoke(
+                    "aseprite/aseprite::cel-pixels",
+                    this.documentResource,
+                    frameIndex,
+                    cel["cel-index"],
+                ),
+                "aseprite cel pixels",
+            )
             const celCanvas = makePixelsCanvas(celPixels)
             ctx.globalAlpha = (cel.opacity / 255) * (layer.opacity / 255)
             ctx.drawImage(celCanvas, cel.x, cel.y)
@@ -729,7 +789,12 @@ export class ViewAseprite extends ViewCanvasBase {
             const slice = this.slices[this.selectedSliceIndex]
             assert(slice, "view-aseprite selected slice must exist")
             const key = sliceKeyForFrame(slice, this.frameIndex)
-            drawSliceOverlay(ctx, key, { offsetX: key.x, offsetY: key.y, lineWidth: 1 / this.scale, color: sliceOverlayColor(slice) })
+            drawSliceOverlay(ctx, key, {
+                offsetX: key.x,
+                offsetY: key.y,
+                lineWidth: 1 / this.scale,
+                color: sliceOverlayColor(slice),
+            })
         }
     }
 }

@@ -1,6 +1,6 @@
 import { runtime, unwrap } from "/core/runtime.js"
-import { ViewCanvasBase } from "/util/view-canvas-base.js"
 import { decode as decodeQoi } from "/util/qoi/decode.js"
+import { ViewCanvasBase } from "/util/view-canvas-base.js"
 
 function assert(condition, message) {
     if (!condition) throw new Error(message)
