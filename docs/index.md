@@ -7,6 +7,8 @@ status: reference
 
 Image and Aseprite file Views for [GAMS](https://github.com/kkgams/gams). The local Project opens a file browser for your own PNG, JPEG, GIF, WebP, QOI or Aseprite files; no artwork is bundled.
 
+[Launch fresh Aseprite demo](https://gams.z0.lv/app.html?showcase=https%3A%2F%2Fgithub.com%2Fkkgams%2Fshowcases%2Freleases%2Fdownload%2Fv0.2.0%2Faseprite.zip). Play the firefly animation and toggle the Shadow layer.
+
 | View | Source → deployed file | Screenshot | Original work |
 | --- | --- | --- | --- |
 | Image (`view-image`) | `src/view.image/views/view-image.js` → `views/view-image.js` | Not available | GAMS authors |
